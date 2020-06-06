@@ -1,5 +1,6 @@
 from tkinter import *
 import random
+#This function draws the base and noose for the game
 def draw_set(the_canvas):
     the_canvas.delete("all")
     the_canvas.create_line(0,150, 150, 150, fill="black")
@@ -17,6 +18,8 @@ def draw_set(the_canvas):
     the_canvas.create_line(60,30, 60, 150, fill="black")
     the_canvas.create_line(60,130, 80,150, fill="black")
     the_canvas.create_line(40,130, 20,150, fill="black")
+#This function removes any remnants of a previous game and sets up the board
+#for a new game     
 def start_game(the_canvas):
     if(list_of_letters!=[]):
         for i in list_of_letters:
@@ -27,6 +30,9 @@ def start_game(the_canvas):
     hiddenword,blanks=create_hidden_word()
     newblanks_label.configure(text="",font=("fixedsys",30),bg="#eefd98")
     blanks_label.configure(text=blanks,font=("fixedsys",30),bg="#eefd98")
+#This function takes in the game data and the letter chosen by the user
+#and processes the data depending on whether or not the letter chosen by the
+#user is a letter in the word.
 def letter_input(letter,oldblanks,hiddenword,incorrect,the_canvas,button_pressed):
     if(letter in hiddenword):
         for i in range(len(hiddenword,)):
@@ -43,6 +49,8 @@ def letter_input(letter,oldblanks,hiddenword,incorrect,the_canvas,button_pressed
     global blanks
     blanks=oldblanks
     button_pressed.destroy()
+#This function draws a part of the hangman whenever the user makes a wrong guess
+#and also decides that the player loses after 5 wrong guesses
 def wrong_guess(wrong,the_canvas):
     if(wrong==0):
         the_canvas.create_oval(100,50, 130, 70, fill="black")
@@ -63,6 +71,8 @@ def wrong_guess(wrong,the_canvas):
         newblanks_label.configure(text=hiddenword)
     global incorrect
     incorrect=wrong+1
+#This function picks a word from a list and creates a blank version of the word
+#(example: Math and "_ _ _ _")
 def create_hidden_word():
     global hiddenword
     global blanks
@@ -77,12 +87,14 @@ def create_hidden_word():
     hiddenword=words[randnum]
     blanks="_"*len(hiddenword)
     return hiddenword,blanks
+#This function creates the beginning screen when the application is opened
 def startscreen(the_canvas):
     Start=Button(window,text="PLAY",padx=54,pady=30,bg="#b3ffb5",font=("fixedsys",10),command=lambda: start_game(the_canvas))
     global list_of_letters
     list_of_letters=[]
     Start.place(x=0,y=233)
     draw_set(the_canvas)
+#This function creates a button for each letter
 def create_alphabet():
     A=Button(window,text="A",padx=10,pady=10,bg="#b3ffb5",font=("fixedsys",10),command=lambda:letter_input("A",blanks,hiddenword,incorrect,the_canvas,A))
     A.place(x=160,y=200)
@@ -138,6 +150,7 @@ def create_alphabet():
     Z.place(x=640,y=250)
     global list_of_letters
     list_of_letters=[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z]
+#This chunk of code sets up the GUI
 window=Tk()
 window.title("Hangman")
 window.geometry("700x300")
